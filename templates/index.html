@@ -7,21 +7,13 @@
     <link rel="stylesheet" href="static/css/jquery.fullpage.css">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <script src="static/js/jquery.fullpage.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   </head>
   <body>
       <div id="fullpage">
           <div class="section s1" data-anchor="site1">
-            <h1><b>Welcome to 
+            <h1><b>Welcome to
             <br>PUT LEAGUE</b></h1>
             <h2>The best place to create a tournament</h2>
-            <div class="language">
-              <select name="slct" id="slct" class="slct">
-                <option value="1">EN</option>
-                <option value="2">PL</option>
-                <option value="3">FR</option>
-              </select>
-            </div>
               <div id="button1">
                 <a href="#site2" class="button4">Start</a>
               </div>
@@ -29,26 +21,23 @@
           <div class="section" data-anchor="site2">
               <div class="slide s2">
                 <h2>Select sports discipline:
-                  <select id = "sport_disciplines">
-                    <option value = "football">Football</option>
-                    <option value = "volleyball">Volleyball</option>
-                    <option value = "handball">Handball</option>
-                    <option value = "basketball">Basketball</option>
-                    <option value = "ice-hockey">Ice hockey</option>
+                  <select id="sport_disciplines">
+                    <option value="football">Football</option>
+                    <option value="volleyball">Volleyball</option>
+                    <option value="handball">Handball</option>
+                    <option value="basketball">Basketball</option>
+                    <option value="ice-hockey">Ice hockey</option>
                   </select>
                 </h2>
-                <h2>Select number of teams:
-                  <select id = "teams_number">
-                    <option value = "sixteen">16</option>
-                  </select>
+                <h2>Number of teams:
+                  <input type="number" id="teams_number" min="4" max="64" step="2" value="16">
                 </h2>
-                <h2>Select division into groups:
-                  <select id = "groups_division">
-                    <option value = "4x4">4x4</option>
+                <h2>Number of groups:
+                  <select id="group_count">
                   </select>
                 </h2>
                   <div id="button1">
-                    <a href="#site2/site3" class="button4">Next</a>
+                    <a href="#site2/site3" class="button4" id="toTeamEntry">Next</a>
                   </div>
               </div>
               <div class="slide s3" data-anchor="site3">
@@ -56,7 +45,7 @@
                     <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
                     <label id="teamNameError"></label>
                       <div class="team-add-button">
-                        <input class="input1" type="text" name="teamName" id="teamName" maxlength="32" pattern="(^[A-Za-z]*\s[A-Za-z]*\s[A-Za-z]*\s[A-Za-z]*$)|(^[A-Za-z]*\s[A-Za-z]*\s[A-Za-z]*)|(^[A-Za-z]*\s[A-Za-z]*)|(^[A-Za-z]*)" title="Only up to 32 a-z or A-Z characters allowed">
+                        <input class="input1" type="text" name="teamName" id="teamName" maxlength="32" title="Up to 32 characters">
                         <input type="submit" class="button4" value="Add team">
                       </div>
                     </form>
@@ -74,7 +63,7 @@
                     </tbody>
                   </table>
                   <div id="button5">
-                    <a href="#site2" class="button4 button4-center"id="toSite2">Back</a>
+                    <a href="#site2" class="button4 button4-center" id="toSite2">Back</a>
                     <a href="teams" class="button4 button4-center" id="Split">Split into groups</a>
                   </div>
               </div>
@@ -96,7 +85,38 @@
             autoScrolling:true,
             controlArrows:false,
         });
-        </script>
+      </script>
+      <script>
+        // Populate group count dropdown based on team count
+        function updateGroupOptions() {
+          let teamCount = parseInt($('#teams_number').val());
+          let select = $('#group_count');
+          select.empty();
+
+          if (isNaN(teamCount) || teamCount < 4) return;
+
+          // Find valid divisors where group size >= 2
+          for (let g = 2; g <= teamCount / 2; g++) {
+            if (teamCount % g === 0) {
+              let groupSize = teamCount / g;
+              if (groupSize >= 2) {
+                select.append($('<option>', {
+                  value: g,
+                  text: g + ' groups of ' + groupSize
+                }));
+              }
+            }
+          }
+
+          // Default to 4 groups if available, otherwise first option
+          if (select.find('option[value="4"]').length) {
+            select.val('4');
+          }
+        }
+
+        $('#teams_number').on('change input', updateGroupOptions);
+        updateGroupOptions();
+      </script>
 
       <script src="static/js/table.js"></script>
   </body>

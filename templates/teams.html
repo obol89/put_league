@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -10,112 +9,36 @@
     <div class="container" id="blur">
       <div class="content">
         <div class='teamsPage'>
-          <h1>Your groups:    </h1>
+          <h1>Your groups:</h1>
           <table class='fullTab'>
-            <tr>
+            {% for group in groups %}
+              {% if loop.index0 % 2 == 0 %}<tr>{% endif %}
               <td>
-                <table class='flex1'>
-                <thead>
-                  <tr>
-                    <th>Group A</th>
-                  </tr>
-                </thead>
-                <tbody class='bodyTab'>
-                  <tr>
-                    <td>{{ groups[0][0] }}</td>
-                  </tr>
-                  <tr>
-                    <td>{{ groups[0][1] }}</td>
-                  </tr>
-                  <tr>
-                    <td>{{ groups[0][2] }}</td>
-                  </tr>
-                  <tr>
-                    <td>{{ groups[0][3] }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-            <td>
-            <table class='flex2'>
-              <thead>
-                <tr>
-                  <th>Group B</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ groups[1][0] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[1][1] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[1][2] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[1][3] }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-          </tr>
-          <tr>
-            <td>
-            <table class='flex3'>
-              <thead>
-                <tr>
-                  <th>Group C</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ groups[2][0] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[2][1] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[2][2] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[2][3] }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-            <td>
-            <table class='flex4'>
-              <thead>
-                <tr>
-                  <th>Group D</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ groups[3][0] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[3][1] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[3][2] }}</td>
-                </tr>
-                <tr>
-                  <td>{{ groups[3][3] }}</td>
-                </tr>
+                <table class='flex{{ loop.index }}'>
+                  <thead>
+                    <tr>
+                      <th>Group {{ group_letter(loop.index0) }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for team in group %}
+                    <tr>
+                      <td>{{ team }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </td>
-            </tr>
-              </tbody>
-            </table>
+              {% if loop.index % 2 == 0 or loop.last %}</tr>{% endif %}
+            {% endfor %}
           </table>
-          </div >
-          <a href="/" class="button4 button4-center" id="goHome">Home</a>
-          <a href="#" onclick="toggle();" id="newPopup"><button class="button4" id="buttonPop">Next</button></a>
+        </div>
+        <a href="/" class="button4 button4-center" id="goHome">Home</a>
+        <a href="#" onclick="toggle();" id="newPopup"><button class="button4" id="buttonPop">Next</button></a>
       </div>
     </div>
     <div id="popup">
-      <p><a href="/summary" target="blank" id="buttonsPop"><button class="button4" id="popFile">Get CSV</button></a></p>
+      <p><a href="/summary" target="_blank" id="buttonsPop"><button class="button4" id="popFile">Get CSV</button></a></p>
       <p><a href="/" id="buttonsPop"><button class="button4" id="popHome">Home</button></a></p>
       <a href="#" onclick="toggle();"><button>Close</button></a>
     </div>
